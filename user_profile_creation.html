@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User_profile_creation &mdash; RDash 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> RDash
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">User_profile_creation</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RDash</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>User_profile_creation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/user_profile_creation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-user_profile_creation">
+<span id="user-profile-creation"></span><h1>User_profile_creation<a class="headerlink" href="#module-user_profile_creation" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_profile_creation.</span></span><span class="sig-name descname"><span class="pre">extract_user_profiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">univ_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which can extract profiles of all users from a university</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.extract_info">
+<span class="sig-name descname"><span class="pre">extract_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.extract_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.extract_info" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract a particular user’s information from general university URL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<cite>str</cite>) – The URL from which response is to be retrieved</p></li>
+<li><p><strong>user_id</strong> (<cite>str</cite>) – ID of the particular scholar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.extract_profiles">
+<span class="sig-name descname"><span class="pre">extract_profiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.extract_profiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.extract_profiles" title="Permalink to this definition"></a></dt>
+<dd><p>Function to compile Scholar data of a particular university.
+The function will first identify the total number of scholars in a university and then get basic summary available for each scholar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_awards">
+<span class="sig-name descname"><span class="pre">get_awards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_awards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_awards" title="Permalink to this definition"></a></dt>
+<dd><p>Function to Research areas of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Research areas  of the Scholar, Length of research_areas</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Tuple (List, Int)</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_department">
+<span class="sig-name descname"><span class="pre">get_department</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_department"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_department" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Department of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Department of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_department_info">
+<span class="sig-name descname"><span class="pre">get_department_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_department_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_department_info" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Department info (including course area) of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Department info  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_email">
+<span class="sig-name descname"><span class="pre">get_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_email" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract email of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Email of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_keywords">
+<span class="sig-name descname"><span class="pre">get_keywords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_keywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_keywords" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract keywords of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Keywords  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract name of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Name of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_netid">
+<span class="sig-name descname"><span class="pre">get_netid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_netid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_netid" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract NetID (University Unique Identifier) of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NetID  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_npublications">
+<span class="sig-name descname"><span class="pre">get_npublications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_npublications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_npublications" title="Permalink to this definition"></a></dt>
+<dd><p>Function to get the no of publciations of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Publications  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_organizations">
+<span class="sig-name descname"><span class="pre">get_organizations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_organizations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_organizations" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Organizations of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Organizations  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_overview">
+<span class="sig-name descname"><span class="pre">get_overview</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_overview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_overview" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Overview of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Overview  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_profile">
+<span class="sig-name descname"><span class="pre">get_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract all details of a scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<cite>str</cite>) – The base university URL from which Scholars’ data can be extracted by appending their user_ids</p></li>
+<li><p><strong>user_id</strong> (<cite>str</cite>) – The university provided User ID of the scholar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Scholar Data in the form of Pandas.DataFrame</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Pandas.DataFrame</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_publications">
+<span class="sig-name descname"><span class="pre">get_publications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_publications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_publications" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract publications of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Publications  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_research">
+<span class="sig-name descname"><span class="pre">get_research</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_research"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_research" title="Permalink to this definition"></a></dt>
+<dd><p>Function to Research areas of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Research areas  of the Scholar, Length of research_areas</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Tuple (List, Int)</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_title">
+<span class="sig-name descname"><span class="pre">get_title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_title"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_title" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Prefered title of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Preferred title of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="user_profile_creation.get_userid">
+<span class="sig-prename descclassname"><span class="pre">user_profile_creation.</span></span><span class="sig-name descname"><span class="pre">get_userid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#get_userid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.get_userid" title="Permalink to this definition"></a></dt>
+<dd><p>Function to get User IDs from JSON</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_dict</strong> (<cite>JSON</cite>) – The URL from which response is to be retrieved</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User ID</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tau_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

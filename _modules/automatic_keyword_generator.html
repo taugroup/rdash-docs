@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>automatic_keyword_generator &mdash; RDash 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RDash
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RDash</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>automatic_keyword_generator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for automatic_keyword_generator</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="c1"># from sentence_transformers import SentenceTransformer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">punctuation</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">rake_nltk</span> <span class="kn">import</span> <span class="n">Rake</span>
+<span class="kn">import</span> <span class="nn">yake</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># from gensim.summarization import keywords</span>
+
+
+<span class="n">rake_nltk_var</span> <span class="o">=</span> <span class="n">Rake</span><span class="p">()</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="s2">&quot;english&quot;</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;en_core_web_sm&#39;</span><span class="p">)</span>
+<span class="c1"># model = SentenceTransformer(&#39;distilbert-base-nli-mean-tokens&#39;)</span>
+
+
+<div class="viewcode-block" id="countVectorizer"><a class="viewcode-back" href="../index.html#automatic_keyword_generator.countVectorizer">[docs]</a><span class="k">def</span> <span class="nf">countVectorizer</span><span class="p">(</span><span class="n">n_gram</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span>
+        <span class="n">ngram_range</span><span class="o">=</span><span class="n">n_gram</span><span class="p">,</span>
+        <span class="n">stop_words</span><span class="o">=</span><span class="n">stop_words</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">count</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">candidates</span></div>
+
+
+<div class="viewcode-block" id="Keyword_generator"><a class="viewcode-back" href="../index.html#automatic_keyword_generator.Keyword_generator">[docs]</a><span class="k">class</span> <span class="nc">Keyword_generator</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Class containing various algorithms to generate keywords.</span>
+<span class="sd">        Algorithms include Yake, Gensim, Rake, Bert, Spacy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor</span>
+<span class="sd">        </span>
+<span class="sd">        :param text: the text to be used to extract keywords from</span>
+<span class="sd">        :type text: `str&#39;</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+
+<div class="viewcode-block" id="Keyword_generator.gensim"><a class="viewcode-back" href="../index.html#automatic_keyword_generator.Keyword_generator.gensim">[docs]</a>    <span class="k">def</span> <span class="nf">gensim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function containing Gensim Algorithm to extract keywords</span>
+<span class="sd">        </span>
+<span class="sd">        :param None: </span>
+<span class="sd">        </span>
+<span class="sd">        :return: List of extracted keywords</span>
+<span class="sd">		:rtype: `List`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">keywords</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Keyword_generator.Yake"><a class="viewcode-back" href="../index.html#automatic_keyword_generator.Keyword_generator.Yake">[docs]</a>    <span class="k">def</span> <span class="nf">Yake</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">max_ngram_size</span><span class="p">,</span>
+            <span class="n">numOfKeywords</span><span class="p">,</span>
+            <span class="n">language</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span>
+            <span class="n">deduplication_threshold</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function containing YAKE algorithm to extract keywords</span>
+
+<span class="sd">        :param max_ngram_size: Int based on word grams</span>
+<span class="sd">        :type max_ngram_size: `int`</span>
+<span class="sd">        :param numOfKeywords: Ordered on relevancy, the number of top keywords to be returned</span>
+<span class="sd">        :type numOfKeywords: `int`</span>
+<span class="sd">        :param language: Language of the text (default = `en`)</span>
+<span class="sd">        :type language: `int`</span>
+<span class="sd">        :param deduplication_threshold: Duplication of words in keywords</span>
+<span class="sd">        :type deduplication_threshold: `float`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: List of extracted keywords</span>
+<span class="sd">        :rtype: `List`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">custom_kw_extractor</span> <span class="o">=</span> <span class="n">yake</span><span class="o">.</span><span class="n">KeywordExtractor</span><span class="p">(</span>
+            <span class="n">lan</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+            <span class="n">n</span><span class="o">=</span><span class="n">max_ngram_size</span><span class="p">,</span>
+            <span class="n">dedupLim</span><span class="o">=</span><span class="n">deduplication_threshold</span><span class="p">,</span>
+            <span class="n">top</span><span class="o">=</span><span class="n">numOfKeywords</span><span class="p">,</span>
+            <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">keywords</span> <span class="o">=</span> <span class="n">custom_kw_extractor</span><span class="o">.</span><span class="n">extract_keywords</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Keyword_generator.Rake"><a class="viewcode-back" href="../index.html#automatic_keyword_generator.Keyword_generator.Rake">[docs]</a>    <span class="k">def</span> <span class="nf">Rake</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function containing RAKE algorithm to extract keywords</span>
+
+<span class="sd">        :param None:</span>
+<span class="sd">        </span>
+<span class="sd">        :return: List of extracted keywords</span>
+<span class="sd">        :rtype: `List`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">rake_nltk_var</span><span class="o">.</span><span class="n">extract_keywords_from_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">keyword_extracted</span> <span class="o">=</span> <span class="n">rake_nltk_var</span><span class="o">.</span><span class="n">get_ranked_phrases</span><span class="p">()</span>
+
+        <span class="n">modified_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^A-Za-z0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keyword_extracted</span><span class="p">]</span>
+        <span class="n">modified_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">k</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()])</span>
+                         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">modified_keys</span><span class="p">]</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">modified_keys</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+<div class="viewcode-block" id="Keyword_generator.BERT"><a class="viewcode-back" href="../index.html#automatic_keyword_generator.Keyword_generator.BERT">[docs]</a>    <span class="k">def</span> <span class="nf">BERT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_gram</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function containing BERT algorithm to extract keywords</span>
+
+<span class="sd">        :param n_gram: No of continuous sequence of words to be used </span>
+<span class="sd">        :type n_gram: `int`</span>
+<span class="sd">        :param top_n:  Ordered on relevancy, the number of top keywords to be returned</span>
+<span class="sd">        :type top_n: `int`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: List of extracted keywords</span>
+<span class="sd">        :rtype: `List`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">stop_words</span> <span class="o">=</span> <span class="s2">&quot;english&quot;</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">n_gram</span><span class="p">,</span> <span class="n">n_gram</span><span class="p">),</span> <span class="n">stop_words</span><span class="o">=</span><span class="n">stop_words</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">])</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">count</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+
+        <span class="n">doc_embedding</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">])</span>
+        <span class="n">candidate_embeddings</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">doc_embedding</span><span class="p">,</span> <span class="n">candidate_embeddings</span><span class="p">)</span>
+        <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="n">candidates</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">distances</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="n">top_n</span><span class="p">:]]</span>
+
+        <span class="k">return</span> <span class="n">keywords</span></div>
+
+<div class="viewcode-block" id="Keyword_generator.Spacy"><a class="viewcode-back" href="../index.html#automatic_keyword_generator.Keyword_generator.Spacy">[docs]</a>    <span class="k">def</span> <span class="nf">Spacy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function containing Spacy algorithm to extract keywords</span>
+
+<span class="sd">        :param None: </span>
+
+<span class="sd">        :return: List of extracted keywords</span>
+<span class="sd">        :rtype: `List`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pos_tag</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PROPN&#39;</span><span class="p">,</span> <span class="s1">&#39;ADJ&#39;</span><span class="p">,</span> <span class="s1">&#39;NOUN&#39;</span><span class="p">]</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="ow">in</span> <span class="n">punctuation</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">pos_tag</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tau_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

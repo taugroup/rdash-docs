@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>create_analytical_data &mdash; RDash 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RDash
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RDash</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>create_analytical_data</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for create_analytical_data</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+
+<span class="kn">from</span> <span class="nn">helpers</span> <span class="kn">import</span> <span class="n">merge_databases</span><span class="p">,</span> <span class="n">save_pandas_to_csv</span><span class="p">,</span> <span class="n">parallelize</span><span class="p">,</span> <span class="n">get_datetime</span><span class="p">,</span> <span class="n">tokenize</span><span class="p">,</span> <span class="n">create_tokens</span><span class="p">,</span> <span class="n">get_keys</span>
+<span class="kn">from</span> <span class="nn">automatic_keyword_generator</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">pdb</span>
+
+<span class="n">extra_stopwords</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="user_keywords"><a class="viewcode-back" href="../index.html#create_analytical_data.user_keywords">[docs]</a><span class="k">def</span> <span class="nf">user_keywords</span><span class="p">(</span><span class="n">user_key</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Function to calculate tokens from user&#39;s keywords </span>
+
+<span class="sd">        :param user_key: Text from which kerwords are to be extracted</span>
+<span class="sd">        :type user_key: `str`</span>
+<span class="sd">        :param i: User ID (dummy_variable)</span>
+<span class="sd">        :type i: `str`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Space separated set of keywords</span>
+<span class="sd">        :rtype: `str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">key_text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">))</span>
+        <span class="n">user_keys</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">key_text</span><span class="p">))</span>
+
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="n">user_keys</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">user_keys</span></div>
+
+
+<div class="viewcode-block" id="user_o_keywords"><a class="viewcode-back" href="../index.html#create_analytical_data.user_o_keywords">[docs]</a><span class="k">def</span> <span class="nf">user_o_keywords</span><span class="p">(</span><span class="n">user_overview</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Function to calculate tokens from user&#39;s Overview </span>
+
+<span class="sd">        :param user_overview: Text from which kerwords are to be extracted</span>
+<span class="sd">        :type user_overview: `str`</span>
+<span class="sd">        :param i: User ID (dummy_variable)</span>
+<span class="sd">        :type i: `str`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Space separated set of keywords</span>
+<span class="sd">        :rtype: `str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">user_keys</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">user_overview</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="n">user_keys</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">user_keys</span></div>
+
+
+<div class="viewcode-block" id="get_author_pubinfo"><a class="viewcode-back" href="../index.html#create_analytical_data.get_author_pubinfo">[docs]</a><span class="k">def</span> <span class="nf">get_author_pubinfo</span><span class="p">(</span><span class="n">scholar_df</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">top_title</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Function to extract information of top N publications of the author </span>
+
+<span class="sd">        :param scholar_df: DataFram containing user&#39;s all information</span>
+<span class="sd">        :type scholar_df: `Pandas.DataFrame`</span>
+<span class="sd">        :param i: User ID (dummy_variable)</span>
+<span class="sd">        :type i: `str`</span>
+<span class="sd">        :param top_n: Based on relevancy, the number of top Titles will be used</span>
+<span class="sd">        :type top_n: `int`</span>
+<span class="sd">        :param top_title: If True, only top N pulications will be extracted. Else all publicatio data will be used.</span>
+<span class="sd">        :type top_title: `bool`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Tuple of Dictionaries. Each distionary contain User_id as key and keyworks from Publication title / User keywords as values</span>
+<span class="sd">        :rtype: `Tuple`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">scholar_df</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">top_title</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scholar_df</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">][:</span><span class="n">top_n</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scholar_df</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+
+        <span class="n">title_keys</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">get_keys</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="s2">&quot;Spacy&quot;</span><span class="p">,</span> <span class="n">ntop</span><span class="o">=</span><span class="n">top_n</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">])))</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span>
+            <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">scholar_df</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+        <span class="n">merge_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+        <span class="n">word_keys</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">merge_keys</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">k</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">])))</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="n">user</span><span class="p">:</span> <span class="n">title_keys</span><span class="p">},</span> <span class="p">{</span><span class="n">user</span><span class="p">:</span> <span class="n">word_keys</span><span class="p">}</span>
+
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">user</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span> <span class="p">{</span><span class="n">user</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="user_org_keywords"><a class="viewcode-back" href="../index.html#create_analytical_data.user_org_keywords">[docs]</a><span class="k">def</span> <span class="nf">user_org_keywords</span><span class="p">(</span><span class="n">user_organisation</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Function to calculate tokens from user&#39;s organization </span>
+
+<span class="sd">        :param user_organisation: Text from which kerwords are to be extracted</span>
+<span class="sd">        :type user_organisation: `str`</span>
+<span class="sd">        :param i: User ID (dummy_variable)</span>
+<span class="sd">        :type i: `str`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Space separated set of keywords</span>
+<span class="sd">        :rtype: `str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#TODO - STOPWORDS are not used correctly</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">user_keys</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tokenize</span><span class="p">(</span>
+            <span class="n">user_organisation</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">extra_stopwords</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="n">user_keys</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">user_keys</span></div>
+
+<div class="viewcode-block" id="Analytical_Data_Creator"><a class="viewcode-back" href="../index.html#create_analytical_data.Analytical_Data_Creator">[docs]</a><span class="k">class</span> <span class="nc">Analytical_Data_Creator</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Class which will create a user (read scholar) database with details from his profile page and relevant publications. </span>
+
+<span class="sd">        :param user_organisation: Text from which kerwords are to be extracted</span>
+<span class="sd">        :type user_organisation: `str`</span>
+<span class="sd">        :param i: User ID (dummy_variable)</span>
+<span class="sd">        :type i: `str`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Space separated set of keywords</span>
+<span class="sd">        :rtype: `str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_cores</span><span class="p">,</span> <span class="n">univ_name</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor</span>
+
+<span class="sd">        :param n_cores: No: of CPU cores to be utilized</span>
+<span class="sd">        :type n_cores: `int`</span>
+<span class="sd">        :param univ_name: Name of the scholar&#39;s university</span>
+<span class="sd">        :type univ_name: `str`</span>
+<span class="sd">        :param params: Dictionary of default values for each parameter as read from the CONFIG.yml file</span>
+<span class="sd">        :type params: `Dict`</span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Initialize the parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;CPU_COUNT&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">n_cores</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n_cores</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;OUTPUT_PATH&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analytical_filename</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;ANALYTICAL_DATSET&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;SCHOLARS_DATASET&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;PUBLICATION_DATASET&quot;</span><span class="p">]))</span>
+        <span class="k">global</span> <span class="n">extra_stopwords</span>
+        <span class="n">extra_stopwords</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;UNIV_DETAILS&#39;</span><span class="p">][</span><span class="n">args</span><span class="o">.</span><span class="n">univ_name</span><span class="p">][</span><span class="s1">&#39;STOPWORDS&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Analytical_Data_Creator.create_user_token_data"><a class="viewcode-back" href="../index.html#create_analytical_data.Analytical_Data_Creator.create_user_token_data">[docs]</a>    <span class="k">def</span> <span class="nf">create_user_token_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to create tokens from Profile page  (Organization, Overview and Keyword sections) for all users </span>
+
+<span class="sd">        :param None: </span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">user_tokens</span> <span class="o">=</span> <span class="n">create_tokens</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="n">user_keywords</span><span class="p">,</span>
+            <span class="n">column_name</span><span class="o">=</span><span class="s2">&quot;Keywords&quot;</span><span class="p">,</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_df</span><span class="p">,</span>
+            <span class="n">n_cores</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">)</span>
+        <span class="n">overview_tokens</span> <span class="o">=</span> <span class="n">create_tokens</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="n">user_o_keywords</span><span class="p">,</span>
+            <span class="n">column_name</span><span class="o">=</span><span class="s2">&quot;Overview&quot;</span><span class="p">,</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_df</span><span class="p">,</span>
+            <span class="n">n_cores</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">)</span>
+        <span class="n">org_tokens</span> <span class="o">=</span> <span class="n">create_tokens</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="n">user_org_keywords</span><span class="p">,</span>
+            <span class="n">column_name</span><span class="o">=</span><span class="s2">&quot;Organizations&quot;</span><span class="p">,</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_df</span><span class="p">,</span>
+            <span class="n">n_cores</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_df</span><span class="p">[[</span><span class="s2">&quot;User_id&quot;</span><span class="p">,</span> <span class="s2">&quot;Netid&quot;</span><span class="p">,</span> <span class="s2">&quot;Email&quot;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_df</span><span class="p">[</span><span class="s2">&quot;Keywords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_tokens</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_df</span><span class="p">[</span><span class="s2">&quot;Overview&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">overview_tokens</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_df</span><span class="p">[</span><span class="s2">&quot;Organization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">org_tokens</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;User_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user_id&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Analytical_Data_Creator.create_publication_data"><a class="viewcode-back" href="../index.html#create_analytical_data.Analytical_Data_Creator.create_publication_data">[docs]</a>    <span class="k">def</span> <span class="nf">create_publication_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Main function to process and compile the final Scholars&#39; dataset </span>
+
+<span class="sd">        :param None: </span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="p">[</span><span class="s1">&#39;publication_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">get_datetime</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="p">[</span><span class="s2">&quot;publicationDate&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="p">[</span><span class="s1">&#39;publication_dt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">get_datetime</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="p">[</span><span class="s2">&quot;publicationDate&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+                <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+        <span class="n">article_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;publication_dt&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="n">article_data</span> <span class="o">=</span> <span class="n">article_data</span><span class="p">[[</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;publication_dt&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;keywords&quot;</span><span class="p">]]</span>
+
+        <span class="n">split_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_df</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">split_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">article_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+        <span class="n">pub_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">split_data</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">split_data</span><span class="p">)))]</span>
+        <span class="n">pub_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pub_tokens</span> <span class="o">=</span> <span class="n">parallelize</span><span class="p">(</span>
+            <span class="n">n_cores</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span>
+            <span class="n">func</span><span class="o">=</span><span class="n">get_author_pubinfo</span><span class="p">,</span>
+            <span class="n">arg1</span><span class="o">=</span><span class="n">pub_list</span><span class="p">)</span>
+
+        <span class="n">pub_title_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pub_tokens</span><span class="p">]</span>
+        <span class="n">pub_key_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pub_tokens</span><span class="p">]</span>
+
+        <span class="n">key_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pub_key_list</span><span class="p">],</span> <span class="s2">&quot;pub_keyword&quot;</span><span class="p">:</span> <span class="p">[</span>
+                              <span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pub_key_list</span><span class="p">]})</span>
+        <span class="n">title_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pub_title_list</span><span class="p">],</span> <span class="s2">&quot;pub_title&quot;</span><span class="p">:</span> <span class="p">[</span>
+                                <span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pub_title_list</span><span class="p">]})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">key_df</span><span class="p">,</span> <span class="n">title_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ad</span> <span class="o">=</span> <span class="n">merge_databases</span><span class="p">(</span>
+            <span class="n">dset1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sub_df</span><span class="p">,</span>
+            <span class="n">dset2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pub_info</span><span class="p">,</span>
+            <span class="n">on</span><span class="o">=</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span>
+            <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+
+        <span class="n">save_pandas_to_csv</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">,</span>
+            <span class="n">output_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">analytical_filename</span><span class="p">),</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="c1"># Read arguments from command line (cmd). If no input via cmd, use config</span>
+    <span class="c1"># file</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Parameter file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--config_file&#39;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;FILENAME&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;config.yml&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Parameter file name in yaml format&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--univ_name&#39;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;UNIV_NAME&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;TAMU&#39;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span>
+            <span class="s1">&#39;TAMU&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;UFL&#39;</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;NAME of University&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--n_cores&#39;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;CPU_COUNT&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;No of CPU threads to be used&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Creating Analytical Data&quot;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config_file</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error loading parameter file: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">config_file</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">analytical_data_creator</span> <span class="o">=</span> <span class="n">Analytical_Data_Creator</span><span class="p">(</span>
+        <span class="n">n_cores</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span> <span class="n">univ_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">univ_name</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">analytical_data_creator</span><span class="o">.</span><span class="n">create_user_token_data</span><span class="p">()</span>
+    <span class="n">analytical_data_creator</span><span class="o">.</span><span class="n">create_publication_data</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tau_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

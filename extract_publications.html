@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extract_publications &mdash; RDash 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> RDash
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Extract_publications</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RDash</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Extract_publications</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/extract_publications.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-extract_publications">
+<span id="extract-publications"></span><h1>Extract_publications<a class="headerlink" href="#module-extract_publications" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">extract_publications.</span></span><span class="sig-name descname"><span class="pre">Extract_Publications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">univ_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which will extract all the publication details of all the scholars of a given university</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.create_univ_publication_data">
+<span class="sig-name descname"><span class="pre">create_univ_publication_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.create_univ_publication_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.create_univ_publication_data" title="Permalink to this definition"></a></dt>
+<dd><p>Main function which will create the publication data for all the users of a university</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.create_user_publication_data">
+<span class="sig-name descname"><span class="pre">create_user_publication_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pub_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.create_user_publication_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.create_user_publication_data" title="Permalink to this definition"></a></dt>
+<dd><p>Creates the publication data for a single user by scraping university webpage.
+The function takes in a publication ID and get complete detail of the data from University webpage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<cite>str</cite>) – User_id for each user whose publications are to be extracted</p></li>
+<li><p><strong>pub_ids</strong> (<cite>List</cite>) – List of all publication IDs for the user</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe for each user where each row is a publication of a user. Total no of rows = n_publications</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class <cite>Pandas.DataFrame</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.get_publication_ids">
+<span class="sig-name descname"><span class="pre">get_publication_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.get_publication_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.get_publication_ids" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dictionary where each user_id is a key and a list of his/her publications as values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> (<cite>str</cite>) – User_id for each user whose publications are to be extracted</p>
+</dd>
+</dl>
+<p>param <a href="#id5"><span class="problematic" id="id6">str_</span></a>: WIP
+:type <a href="#id7"><span class="problematic" id="id8">str_</span></a>: <cite>str</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictonary of {User IDs : List of publications}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>class <a href="#id1"><span class="problematic" id="id2">`</span></a>Dictionary `</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.save_user_publications">
+<span class="sig-name descname"><span class="pre">save_user_publications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">univ_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TAMU'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.save_user_publications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.save_user_publications" title="Permalink to this definition"></a></dt>
+<dd><p>Function to save the publication details of each user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>univ_name</strong> (<a href="#id3"><span class="problematic" id="id4">`</span></a>str1) – University name of the user - which determines the file names for saving.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tau_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RDash - Quickstart Guide &mdash; RDash 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> RDash
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">RDash - Quickstart Guide</a></li>
+<li><a class="reference internal" href="#setup">Setup</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#workflow">Workflow</a></li>
+<li><a class="reference internal" href="#modules">Modules</a><ul>
+<li><a class="reference internal" href="#module-automatic_keyword_generator">Automatic_keyword_generator</a></li>
+<li><a class="reference internal" href="#module-main_extractor">Main_extractor</a></li>
+<li><a class="reference internal" href="#module-recommend_scholars">Recommend_scholars</a></li>
+<li><a class="reference internal" href="#module-extract_proposals">Extract_proposals</a></li>
+<li><a class="reference internal" href="#module-create_analytical_data">Create_analytical_data</a></li>
+<li><a class="reference internal" href="#module-extract_publications">Extract_publications</a></li>
+<li><a class="reference internal" href="#module-user_profile_creation">User_profile_creation</a></li>
+<li><a class="reference internal" href="#module-helpers">Helpers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">RDash</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>RDash - Quickstart Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rdash-quickstart-guide">
+<h1>RDash - Quickstart Guide<a class="headerlink" href="#rdash-quickstart-guide" title="Permalink to this heading"></a></h1>
+<p>RDash is a recommendation system that captures the opportunities for pursuing external research funds through grants, contracts, and subcontracts based on the scholar’s research profile. RDash-Grants entails analyzing a massive set of solicitations and funding opportunities and selecting the most appropriate one or group of relevant grants by considering the scholar’s preferences and research profile.</p>
+<dl class="simple">
+<dt>Like most of the projects, RDash consists of two main components :</dt><dd><ul class="simple">
+<li><p>A webapp (frontend)</p></li>
+<li><p>Backend</p></li>
+</ul>
+</dd>
+</dl>
+<p>This page will provide details on the backend component of RDash which uses Natural Language Processing for recommendation.</p>
+</section>
+<section id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h1>
+<p>Before using the code you should first clone the repository (currently available only to Taugroup members) and install all the required libraries. This can be done through the below snippet from your command line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">taugroup</span><span class="o">/</span><span class="n">RDASH</span><span class="o">.</span><span class="n">git</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<p>End-to-end recommendation system can be broken down to 7 steps. Each of the steps and their corresponding code are given below.</p>
+<p>Step 1 : Create a list of Scholars (with demographic details and list of publications)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">user_profile_creation</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">univ_name</span><span class="o">=</span><span class="s1">&#39;TAMU&#39;</span>
+</pre></div>
+</div>
+<p>Step 2 : Create publication database - extract the information from all publications of each user</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">extract_publications</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">n_cores</span><span class="o">=</span><span class="mi">20</span>
+</pre></div>
+</div>
+<p>Step 3 : Create Analytical database - with representative keywords for each user</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">create_analytical_data</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">n_cores</span><span class="o">=</span><span class="mi">20</span>
+</pre></div>
+</div>
+<p>Step 4 : Compile list of Grants</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">extract_proposals</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Step 5 : Extract grant details</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">main_extractor</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">n_cores</span><span class="o">=</span><span class="mi">20</span> <span class="o">--</span><span class="n">a</span> <span class="s1">&#39;National Science Foundation&#39;</span> <span class="s1">&#39;National Institutes of Health&#39;</span>
+</pre></div>
+</div>
+<p>Step 6 : Recommend scholars for a Proposal / grant</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">recommend_scholars</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">top_k</span><span class="o">=</span><span class="mi">20</span> <span class="o">--</span><span class="n">proposal_id</span><span class="o">=</span><span class="s1">&#39;PD-18-1263&#39;</span> <span class="o">--</span><span class="n">n_cores</span><span class="o">=</span><span class="mi">20</span> <span class="o">--</span><span class="n">agency</span><span class="o">=</span><span class="s1">&#39;NSF&#39;</span>
+</pre></div>
+</div>
+<p>Step 7 : Extract proposals to a json for searching</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">extract_proposals_titles_db</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+<section id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p>The tool extracts and creates user/scholar profile using the TAMU scholars library using APIs</p></li>
+<li><p>Matches and recommends user profile to research proposals</p></li>
+<li><p>Identify similar research profiles for each scholar</p></li>
+<li><p>Advance Oppurtunities for Intelligent Research</p></li>
+<li><p>Recommend latest relevant articles/publications for literature searcha and advancement</p></li>
+</ul>
+</section>
+<section id="workflow">
+<h1>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading"></a></h1>
+<img alt="_images/Workflow" src="_images/Workflow" />
+</section>
+<section id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this heading"></a></h1>
+<p>Below is the documentation for various python modules used in this project.</p>
+<div class="toctree-wrapper compound">
+</div>
+<section id="module-automatic_keyword_generator">
+<span id="automatic-keyword-generator"></span><h2>Automatic_keyword_generator<a class="headerlink" href="#module-automatic_keyword_generator" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="automatic_keyword_generator.Keyword_generator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">automatic_keyword_generator.</span></span><span class="sig-name descname"><span class="pre">Keyword_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/automatic_keyword_generator.html#Keyword_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#automatic_keyword_generator.Keyword_generator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class containing various algorithms to generate keywords.
+Algorithms include Yake, Gensim, Rake, Bert, Spacy.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="automatic_keyword_generator.Keyword_generator.BERT">
+<span class="sig-name descname"><span class="pre">BERT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_gram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/automatic_keyword_generator.html#Keyword_generator.BERT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#automatic_keyword_generator.Keyword_generator.BERT" title="Permalink to this definition"></a></dt>
+<dd><p>Function containing BERT algorithm to extract keywords</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_gram</strong> (<cite>int</cite>) – No of continuous sequence of words to be used</p></li>
+<li><p><strong>top_n</strong> (<cite>int</cite>) – Ordered on relevancy, the number of top keywords to be returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of extracted keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="automatic_keyword_generator.Keyword_generator.Rake">
+<span class="sig-name descname"><span class="pre">Rake</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/automatic_keyword_generator.html#Keyword_generator.Rake"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#automatic_keyword_generator.Keyword_generator.Rake" title="Permalink to this definition"></a></dt>
+<dd><p>Function containing RAKE algorithm to extract keywords</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of extracted keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="automatic_keyword_generator.Keyword_generator.Spacy">
+<span class="sig-name descname"><span class="pre">Spacy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/automatic_keyword_generator.html#Keyword_generator.Spacy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#automatic_keyword_generator.Keyword_generator.Spacy" title="Permalink to this definition"></a></dt>
+<dd><p>Function containing Spacy algorithm to extract keywords</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of extracted keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="automatic_keyword_generator.Keyword_generator.Yake">
+<span class="sig-name descname"><span class="pre">Yake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_ngram_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numOfKeywords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deduplication_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/automatic_keyword_generator.html#Keyword_generator.Yake"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#automatic_keyword_generator.Keyword_generator.Yake" title="Permalink to this definition"></a></dt>
+<dd><p>Function containing YAKE algorithm to extract keywords</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_ngram_size</strong> (<cite>int</cite>) – Int based on word grams</p></li>
+<li><p><strong>numOfKeywords</strong> (<cite>int</cite>) – Ordered on relevancy, the number of top keywords to be returned</p></li>
+<li><p><strong>language</strong> (<cite>int</cite>) – Language of the text (default = <cite>en</cite>)</p></li>
+<li><p><strong>deduplication_threshold</strong> (<cite>float</cite>) – Duplication of words in keywords</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of extracted keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="automatic_keyword_generator.Keyword_generator.gensim">
+<span class="sig-name descname"><span class="pre">gensim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/automatic_keyword_generator.html#Keyword_generator.gensim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#automatic_keyword_generator.Keyword_generator.gensim" title="Permalink to this definition"></a></dt>
+<dd><p>Function containing Gensim Algorithm to extract keywords</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of extracted keywords
+:rtype: <cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="automatic_keyword_generator.countVectorizer">
+<span class="sig-prename descclassname"><span class="pre">automatic_keyword_generator.</span></span><span class="sig-name descname"><span class="pre">countVectorizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_gram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/automatic_keyword_generator.html#countVectorizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#automatic_keyword_generator.countVectorizer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-main_extractor">
+<span id="main-extractor"></span><h2>Main_extractor<a class="headerlink" href="#module-main_extractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="main_extractor.AgencyDataExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_extractor.</span></span><span class="sig-name descname"><span class="pre">AgencyDataExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main_extractor.html#AgencyDataExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main_extractor.AgencyDataExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which can extract data from required agencey webpages.
+Currently added agencie - NIH, NSF</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="main_extractor.AgencyDataExtractor.extract_agency_proposals">
+<span class="sig-name descname"><span class="pre">extract_agency_proposals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main_extractor.html#AgencyDataExtractor.extract_agency_proposals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main_extractor.AgencyDataExtractor.extract_agency_proposals" title="Permalink to this definition"></a></dt>
+<dd><p>Parent function which calls child functions to retrieve data for each agency.
+Each child function will save the data to specific files separately.
+:param None:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-recommend_scholars">
+<span id="recommend-scholars"></span><h2>Recommend_scholars<a class="headerlink" href="#module-recommend_scholars" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="recommend_scholars.Top_Scholar_Identifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recommend_scholars.</span></span><span class="sig-name descname"><span class="pre">Top_Scholar_Identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_no</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommend_scholars.html#Top_Scholar_Identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommend_scholars.Top_Scholar_Identifier" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a class to identify the top N scholars for a given proposal.
+The proposal dataset created using ‘main_extractor.py’ will be utilized to get details of the proposal / grant.
+The analytical dataset of user-publications created using ‘create_analytical_data.py’ will be utilized to get scholar profiles.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="recommend_scholars.Top_Scholar_Identifier.get_section_keys_for_proposal">
+<span class="sig-name descname"><span class="pre">get_section_keys_for_proposal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommend_scholars.html#Top_Scholar_Identifier.get_section_keys_for_proposal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommend_scholars.Top_Scholar_Identifier.get_section_keys_for_proposal" title="Permalink to this definition"></a></dt>
+<dd><p>Function to get keywords from Description, Title adn Department sections of the proposal text</p>
+<p>:param None :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None
+:rtype:</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommend_scholars.Top_Scholar_Identifier.get_top_scholars">
+<span class="sig-name descname"><span class="pre">get_top_scholars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ntop_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommend_scholars.html#Top_Scholar_Identifier.get_top_scholars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommend_scholars.Top_Scholar_Identifier.get_top_scholars" title="Permalink to this definition"></a></dt>
+<dd><p>Main function to calculate the scholars suitable for the given proposal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ntop</strong> (<cite>int</cite>) – No of scholars to be recommended</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self.recommend_df
+:rtype: class <cite>Pandas.DataFrame</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommend_scholars.Top_Scholar_Identifier.read_data">
+<span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommend_scholars.html#Top_Scholar_Identifier.read_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommend_scholars.Top_Scholar_Identifier.read_data" title="Permalink to this definition"></a></dt>
+<dd><p>Function which will read data from the initialized CSV files
+regarding proposal and scholar datails and save them as pandas dataframe</p>
+<p>:param None :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None
+:rtype:</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="recommend_scholars.get_column_names">
+<span class="sig-prename descclassname"><span class="pre">recommend_scholars.</span></span><span class="sig-name descname"><span class="pre">get_column_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommend_scholars.html#get_column_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommend_scholars.get_column_names" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-extract_proposals">
+<span id="extract-proposals"></span><h2>Extract_proposals<a class="headerlink" href="#module-extract_proposals" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="extract_proposals.GrantsDataExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">extract_proposals.</span></span><span class="sig-name descname"><span class="pre">GrantsDataExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_proposals.html#GrantsDataExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_proposals.GrantsDataExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which will extract data from the Grants.Gov website.</p>
+<p>As per design, we will first download the list of all Open proposals from the Grants.gov.
+Later for each proposal, further data is extracted from the dedicated webpage (for example from NSF website).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_proposals.GrantsDataExtractor.ExtractCSVData">
+<span class="sig-name descname"><span class="pre">ExtractCSVData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_proposals.html#GrantsDataExtractor.ExtractCSVData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_proposals.GrantsDataExtractor.ExtractCSVData" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract data from the downloaded CSV file
+Once the data is extracted it will be saved as a dataframe - self.metadata</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_proposals.GrantsDataExtractor.ExtractXMLData">
+<span class="sig-name descname"><span class="pre">ExtractXMLData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_proposals.html#GrantsDataExtractor.ExtractXMLData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_proposals.GrantsDataExtractor.ExtractXMLData" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract data from the XML file.
+Once the data is extracted it will be saved as a dataframe - self.opps_df</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_proposals.GrantsDataExtractor.ProcessXMLData">
+<span class="sig-name descname"><span class="pre">ProcessXMLData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_proposals.html#GrantsDataExtractor.ProcessXMLData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_proposals.GrantsDataExtractor.ProcessXMLData" title="Permalink to this definition"></a></dt>
+<dd><p>Function to process extracted the XML data.
+Reformat columns - CloseDate, PostDate. LastUpdateDate.
+Identify Open Proposals.</p>
+<p>:param None :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_proposals.GrantsDataExtractor.SaveXMLData">
+<span class="sig-name descname"><span class="pre">SaveXMLData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_proposals.html#GrantsDataExtractor.SaveXMLData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_proposals.GrantsDataExtractor.SaveXMLData" title="Permalink to this definition"></a></dt>
+<dd><p>Function to save all the XML Data to CSV files. Specifically, Open Proposals agency wise will be saved in seprate files.</p>
+<p>:param None :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-create_analytical_data">
+<span id="create-analytical-data"></span><h2>Create_analytical_data<a class="headerlink" href="#module-create_analytical_data" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="create_analytical_data.Analytical_Data_Creator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">create_analytical_data.</span></span><span class="sig-name descname"><span class="pre">Analytical_Data_Creator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">univ_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_analytical_data.html#Analytical_Data_Creator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_analytical_data.Analytical_Data_Creator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which will create a user (read scholar) database with details from his profile page and relevant publications.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_organisation</strong> (<cite>str</cite>) – Text from which kerwords are to be extracted</p></li>
+<li><p><strong>i</strong> (<cite>str</cite>) – User ID (dummy_variable)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Space separated set of keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="create_analytical_data.Analytical_Data_Creator.create_publication_data">
+<span class="sig-name descname"><span class="pre">create_publication_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_analytical_data.html#Analytical_Data_Creator.create_publication_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_analytical_data.Analytical_Data_Creator.create_publication_data" title="Permalink to this definition"></a></dt>
+<dd><p>Main function to process and compile the final Scholars’ dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="create_analytical_data.Analytical_Data_Creator.create_user_token_data">
+<span class="sig-name descname"><span class="pre">create_user_token_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_analytical_data.html#Analytical_Data_Creator.create_user_token_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_analytical_data.Analytical_Data_Creator.create_user_token_data" title="Permalink to this definition"></a></dt>
+<dd><p>Function to create tokens from Profile page  (Organization, Overview and Keyword sections) for all users</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_analytical_data.get_author_pubinfo">
+<span class="sig-prename descclassname"><span class="pre">create_analytical_data.</span></span><span class="sig-name descname"><span class="pre">get_author_pubinfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scholar_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_analytical_data.html#get_author_pubinfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_analytical_data.get_author_pubinfo" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract information of top N publications of the author</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scholar_df</strong> (<cite>Pandas.DataFrame</cite>) – DataFram containing user’s all information</p></li>
+<li><p><strong>i</strong> (<cite>str</cite>) – User ID (dummy_variable)</p></li>
+<li><p><strong>top_n</strong> (<cite>int</cite>) – Based on relevancy, the number of top Titles will be used</p></li>
+<li><p><strong>top_title</strong> (<cite>bool</cite>) – If True, only top N pulications will be extracted. Else all publicatio data will be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of Dictionaries. Each distionary contain User_id as key and keyworks from Publication title / User keywords as values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Tuple</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_analytical_data.user_keywords">
+<span class="sig-prename descclassname"><span class="pre">create_analytical_data.</span></span><span class="sig-name descname"><span class="pre">user_keywords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_analytical_data.html#user_keywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_analytical_data.user_keywords" title="Permalink to this definition"></a></dt>
+<dd><p>Function to calculate tokens from user’s keywords</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_key</strong> (<cite>str</cite>) – Text from which kerwords are to be extracted</p></li>
+<li><p><strong>i</strong> (<cite>str</cite>) – User ID (dummy_variable)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Space separated set of keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_analytical_data.user_o_keywords">
+<span class="sig-prename descclassname"><span class="pre">create_analytical_data.</span></span><span class="sig-name descname"><span class="pre">user_o_keywords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_overview</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_analytical_data.html#user_o_keywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_analytical_data.user_o_keywords" title="Permalink to this definition"></a></dt>
+<dd><p>Function to calculate tokens from user’s Overview</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_overview</strong> (<cite>str</cite>) – Text from which kerwords are to be extracted</p></li>
+<li><p><strong>i</strong> (<cite>str</cite>) – User ID (dummy_variable)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Space separated set of keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_analytical_data.user_org_keywords">
+<span class="sig-prename descclassname"><span class="pre">create_analytical_data.</span></span><span class="sig-name descname"><span class="pre">user_org_keywords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_organisation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_analytical_data.html#user_org_keywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_analytical_data.user_org_keywords" title="Permalink to this definition"></a></dt>
+<dd><p>Function to calculate tokens from user’s organization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_organisation</strong> (<cite>str</cite>) – Text from which kerwords are to be extracted</p></li>
+<li><p><strong>i</strong> (<cite>str</cite>) – User ID (dummy_variable)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Space separated set of keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-extract_publications">
+<span id="extract-publications"></span><h2>Extract_publications<a class="headerlink" href="#module-extract_publications" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">extract_publications.</span></span><span class="sig-name descname"><span class="pre">Extract_Publications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">univ_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which will extract all the publication details of all the scholars of a given university</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.create_univ_publication_data">
+<span class="sig-name descname"><span class="pre">create_univ_publication_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.create_univ_publication_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.create_univ_publication_data" title="Permalink to this definition"></a></dt>
+<dd><p>Main function which will create the publication data for all the users of a university</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.create_user_publication_data">
+<span class="sig-name descname"><span class="pre">create_user_publication_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pub_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.create_user_publication_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.create_user_publication_data" title="Permalink to this definition"></a></dt>
+<dd><p>Creates the publication data for a single user by scraping university webpage.
+The function takes in a publication ID and get complete detail of the data from University webpage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<cite>str</cite>) – User_id for each user whose publications are to be extracted</p></li>
+<li><p><strong>pub_ids</strong> (<cite>List</cite>) – List of all publication IDs for the user</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe for each user where each row is a publication of a user. Total no of rows = n_publications</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class <cite>Pandas.DataFrame</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.get_publication_ids">
+<span class="sig-name descname"><span class="pre">get_publication_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.get_publication_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.get_publication_ids" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dictionary where each user_id is a key and a list of his/her publications as values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> (<cite>str</cite>) – User_id for each user whose publications are to be extracted</p>
+</dd>
+</dl>
+<p>param <a href="#id5"><span class="problematic" id="id6">str_</span></a>: WIP
+:type <a href="#id7"><span class="problematic" id="id8">str_</span></a>: <cite>str</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictonary of {User IDs : List of publications}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>class <a href="#id1"><span class="problematic" id="id2">`</span></a>Dictionary `</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="extract_publications.Extract_Publications.save_user_publications">
+<span class="sig-name descname"><span class="pre">save_user_publications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">univ_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TAMU'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract_publications.html#Extract_Publications.save_user_publications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#extract_publications.Extract_Publications.save_user_publications" title="Permalink to this definition"></a></dt>
+<dd><p>Function to save the publication details of each user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>univ_name</strong> (<a href="#id3"><span class="problematic" id="id4">`</span></a>str1) – University name of the user - which determines the file names for saving.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-user_profile_creation">
+<span id="user-profile-creation"></span><h2>User_profile_creation<a class="headerlink" href="#module-user_profile_creation" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_profile_creation.</span></span><span class="sig-name descname"><span class="pre">extract_user_profiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">univ_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which can extract profiles of all users from a university</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.extract_info">
+<span class="sig-name descname"><span class="pre">extract_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.extract_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.extract_info" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract a particular user’s information from general university URL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<cite>str</cite>) – The URL from which response is to be retrieved</p></li>
+<li><p><strong>user_id</strong> (<cite>str</cite>) – ID of the particular scholar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.extract_profiles">
+<span class="sig-name descname"><span class="pre">extract_profiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.extract_profiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.extract_profiles" title="Permalink to this definition"></a></dt>
+<dd><p>Function to compile Scholar data of a particular university.
+The function will first identify the total number of scholars in a university and then get basic summary available for each scholar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_awards">
+<span class="sig-name descname"><span class="pre">get_awards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_awards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_awards" title="Permalink to this definition"></a></dt>
+<dd><p>Function to Research areas of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Research areas  of the Scholar, Length of research_areas</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Tuple (List, Int)</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_department">
+<span class="sig-name descname"><span class="pre">get_department</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_department"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_department" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Department of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Department of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_department_info">
+<span class="sig-name descname"><span class="pre">get_department_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_department_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_department_info" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Department info (including course area) of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Department info  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_email">
+<span class="sig-name descname"><span class="pre">get_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_email" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract email of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Email of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_keywords">
+<span class="sig-name descname"><span class="pre">get_keywords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_keywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_keywords" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract keywords of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Keywords  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract name of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Name of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_netid">
+<span class="sig-name descname"><span class="pre">get_netid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_netid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_netid" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract NetID (University Unique Identifier) of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NetID  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_npublications">
+<span class="sig-name descname"><span class="pre">get_npublications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_npublications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_npublications" title="Permalink to this definition"></a></dt>
+<dd><p>Function to get the no of publciations of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Publications  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_organizations">
+<span class="sig-name descname"><span class="pre">get_organizations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_organizations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_organizations" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Organizations of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Organizations  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_overview">
+<span class="sig-name descname"><span class="pre">get_overview</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_overview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_overview" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Overview of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Overview  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_profile">
+<span class="sig-name descname"><span class="pre">get_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract all details of a scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<cite>str</cite>) – The base university URL from which Scholars’ data can be extracted by appending their user_ids</p></li>
+<li><p><strong>user_id</strong> (<cite>str</cite>) – The university provided User ID of the scholar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Scholar Data in the form of Pandas.DataFrame</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Pandas.DataFrame</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_publications">
+<span class="sig-name descname"><span class="pre">get_publications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_publications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_publications" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract publications of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Publications  of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_research">
+<span class="sig-name descname"><span class="pre">get_research</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_research"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_research" title="Permalink to this definition"></a></dt>
+<dd><p>Function to Research areas of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Research areas  of the Scholar, Length of research_areas</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Tuple (List, Int)</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user_profile_creation.extract_user_profiles.get_title">
+<span class="sig-name descname"><span class="pre">get_title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#extract_user_profiles.get_title"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.extract_user_profiles.get_title" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract Prefered title of the Scholar from University Page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Preferred title of the Scholar</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="user_profile_creation.get_userid">
+<span class="sig-prename descclassname"><span class="pre">user_profile_creation.</span></span><span class="sig-name descname"><span class="pre">get_userid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_profile_creation.html#get_userid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user_profile_creation.get_userid" title="Permalink to this definition"></a></dt>
+<dd><p>Function to get User IDs from JSON</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_dict</strong> (<cite>JSON</cite>) – The URL from which response is to be retrieved</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User ID</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-helpers">
+<span id="helpers"></span><h2>Helpers<a class="headerlink" href="#module-helpers" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="helpers.PreProcessing">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">PreProcessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class which is equipped with all sorts of Preprocessing &amp; Cleaning techniques</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.lemmatize">
+<span class="sig-name descname"><span class="pre">lemmatize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.lemmatize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.lemmatize" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract root words - Lemmatizing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.remove_characters">
+<span class="sig-name descname"><span class="pre">remove_characters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.remove_characters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.remove_characters" title="Permalink to this definition"></a></dt>
+<dd><p>Function to remove special characters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.remove_letters">
+<span class="sig-name descname"><span class="pre">remove_letters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.remove_letters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.remove_letters" title="Permalink to this definition"></a></dt>
+<dd><p>Function to remove words from a text with less than n letters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.remove_numbers">
+<span class="sig-name descname"><span class="pre">remove_numbers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.remove_numbers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.remove_numbers" title="Permalink to this definition"></a></dt>
+<dd><p>Function to remove numbers in a text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.remove_punctuation">
+<span class="sig-name descname"><span class="pre">remove_punctuation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.remove_punctuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.remove_punctuation" title="Permalink to this definition"></a></dt>
+<dd><p>Function to remove punctuations from the text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.remove_stopwords">
+<span class="sig-name descname"><span class="pre">remove_stopwords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.remove_stopwords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.remove_stopwords" title="Permalink to this definition"></a></dt>
+<dd><p>Function to remove stopwords from the text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.remove_urls">
+<span class="sig-name descname"><span class="pre">remove_urls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.remove_urls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.remove_urls" title="Permalink to this definition"></a></dt>
+<dd><p>Remove URLs from text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Text after removing URLS</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.stemming">
+<span class="sig-name descname"><span class="pre">stemming</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.stemming"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.stemming" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract root words - Stemming</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.text_lowercase">
+<span class="sig-name descname"><span class="pre">text_lowercase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.text_lowercase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.text_lowercase" title="Permalink to this definition"></a></dt>
+<dd><p>Function to convert all alphabets in a text to lowercase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="helpers.PreProcessing.tokenize">
+<span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#PreProcessing.tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.PreProcessing.tokenize" title="Permalink to this definition"></a></dt>
+<dd><p>Function to tokenize phrases and tokens</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.counter_cosine_similarity">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">counter_cosine_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counterA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counterB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#counter_cosine_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.counter_cosine_similarity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the counter cosine similarity for each user_id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<cite>str</cite>) – User ID</p></li>
+<li><p><strong>counterA</strong> (<cite>List</cite>) – Keyword list 1</p></li>
+<li><p><strong>counterB</strong> (<cite>List</cite>) – Keyword list 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of {User ID: Counter_cosine value}</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Dictionary</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.create_tokens">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">create_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#create_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.create_tokens" title="Permalink to this definition"></a></dt>
+<dd><p>Function to create tokens for a given column name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<cite>Pandas.DataFrame</cite>) – DataFrame</p></li>
+<li><p><strong>func</strong> – Function to be applied</p></li>
+<li><p><strong>column_name</strong> (<cite>str</cite>) – The name of the column</p></li>
+<li><p><strong>n_cores</strong> (<cite>int</cite>) – No of CPU cores to be used</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing the results of the function applied on each element of the column</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.extract_json">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">extract_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#extract_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.extract_json" title="Permalink to this definition"></a></dt>
+<dd><p>Extract data from webpage by appending Base_url+page+End_url</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<cite>str</cite>) – Base URL</p></li>
+<li><p><strong>end_url</strong> (<cite>str</cite>) – End URL</p></li>
+<li><p><strong>page</strong> (<cite>str</cite>) – The page number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response from the webpage</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Dict</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.get_datetime">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">get_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#get_datetime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.get_datetime" title="Permalink to this definition"></a></dt>
+<dd><p>Converts string Datetime to Datetime Object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_str</strong> (<cite>str</cite>) – Datetime in String</p></li>
+<li><p><strong>year</strong> (<cite>bool</cite>) – If True, extracts returns the year</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Datetime object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Datetime</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.get_formatted_date">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">get_formatted_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%m%d%Y'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#get_formatted_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.get_formatted_date" title="Permalink to this definition"></a></dt>
+<dd><p>Function to format date in a required format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<cite>List</cite>) – List of dates as string</p></li>
+<li><p><strong>format</strong> (<cite>str</cite>) – Format in which date should be returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted date</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Datetime</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.get_keys">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">get_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Spacy'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#get_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.get_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Function to extract keywords from a text using a chosen generator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<cite>str</cite>) – The text from which keywords are to be extracted</p></li>
+<li><p><strong>ngram</strong> (<cite>int</cite>) – No of words used for Ngram</p></li>
+<li><p><strong>ntop</strong> (<cite>int</cite>) – The no of top keywords to be extracted</p></li>
+<li><p><strong>generator</strong> (<cite>str</cite>) – The algorithm to be used for keyword extraction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Keywords</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.get_request">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">get_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#get_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.get_request" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves a webpage with the desired header and payload data and returns the text data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<cite>str</cite>) – URL from which data needs to be extracted</p></li>
+<li><p><strong>headers</strong> (<cite>List</cite>) – headers for the url</p></li>
+<li><p><strong>data</strong> (<cite>Dict</cite>) – Payload data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response from the webpage in text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.merge_databases">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">merge_databases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dset1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dset2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inner'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#merge_databases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.merge_databases" title="Permalink to this definition"></a></dt>
+<dd><p>Function to merge two_datasets with key as ‘on’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dset1</strong> (<cite>Pandas.DataFrame</cite>) – Dataset 1</p></li>
+<li><p><strong>dset2</strong> (<cite>Pandas.DataFrame</cite>) – Dataset 2</p></li>
+<li><p><strong>on</strong> (<cite>str</cite>) – Column on which datasets are to be merged</p></li>
+<li><p><strong>how</strong> (<cite>str</cite>) – Type of join</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Merged datafram</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Pandas.DataFrame</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.parallelize">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">parallelize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#parallelize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.parallelize" title="Permalink to this definition"></a></dt>
+<dd><p>Function to Parallelize the task on multiple CPU thread</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_cores</strong> (<cite>int</cite>) – No of cores of CPU to be used</p></li>
+<li><p><strong>func</strong> (<em>Function</em><em>(</em><em>)</em>) – The function which needs to be parallelized</p></li>
+<li><p><strong>arg1</strong> (<cite>str</cite>) – List[list of elements, len(list of elements)]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing the results of the function applied on each element in arg1[0]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.save_pandas_to_csv">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">save_pandas_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#save_pandas_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.save_pandas_to_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Saves the dataset to CSV file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_path</strong> (<cite>str</cite>) – Path where the file needs to be saved</p></li>
+<li><p><strong>index</strong> (<cite>bool</cite>) – Whether index should be included while saving</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="helpers.tokenize">
+<span class="sig-prename descclassname"><span class="pre">helpers.</span></span><span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phrase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helpers.html#tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#helpers.tokenize" title="Permalink to this definition"></a></dt>
+<dd><p>Function which preprocess and tokenize a given phrase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phrase</strong> (<cite>str</cite>) – Phrase to be tokenized</p></li>
+<li><p><strong>k</strong> (<cite>str</cite>) – Minimum length for a words for it to be retained in the text</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed tokens</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>List</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tau_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

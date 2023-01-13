@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main_extractor &mdash; RDash 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RDash
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RDash</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>main_extractor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for main_extractor</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">Agency_proposal_extractor.NIH_Extractor</span> <span class="kn">import</span> <span class="n">NIHExtractor</span>
+<span class="kn">from</span> <span class="nn">Agency_proposal_extractor.NSF_Extractor</span> <span class="kn">import</span> <span class="n">NSFExtractor</span>
+
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="AgencyDataExtractor"><a class="viewcode-back" href="../main_extractor.html#main_extractor.AgencyDataExtractor">[docs]</a><span class="k">class</span> <span class="nc">AgencyDataExtractor</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Class which can extract data from required agencey webpages.</span>
+<span class="sd">        Currently added agencie - NIH, NSF</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_cores</span><span class="p">,</span> <span class="n">agencies</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constuctor</span>
+
+<span class="sd">        :param n_cores: No of CPU cores to be used </span>
+<span class="sd">        :type n_cores: `int`</span>
+<span class="sd">        :param agencies: List of agence names from which data is to be extracted</span>
+<span class="sd">        :type agencies: `List`</span>
+<span class="sd">        :param params: Dictionary of default parameter values from CONFIG.yml file</span>
+<span class="sd">        :type params: `Dict`</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;CPU_COUNT&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">n_cores</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n_cores</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agencies_filenames</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;AGENCIES_FILENAME_DICT&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agencies</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;AGENCIES&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">agencies</span> <span class="o">==</span> <span class="p">[]</span> <span class="k">else</span> <span class="n">agencies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;OUTPUT_PATH&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agency_extractors</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;National Institutes of Health&#39;</span><span class="p">:</span> <span class="n">NIHExtractor</span><span class="p">,</span>
+            <span class="s1">&#39;National Science Foundation&#39;</span><span class="p">:</span> <span class="n">NSFExtractor</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extracted_agencies_filenames</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;AGENCIES_EXTRACTED_FILENAME_DICT&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="AgencyDataExtractor.extract_agency_proposals"><a class="viewcode-back" href="../main_extractor.html#main_extractor.AgencyDataExtractor.extract_agency_proposals">[docs]</a>    <span class="k">def</span> <span class="nf">extract_agency_proposals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parent function which calls child functions to retrieve data for each agency.</span>
+<span class="sd">        Each child function will save the data to specific files separately. </span>
+<span class="sd">        :param None: </span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">agency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agencies</span><span class="p">:</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                
+                <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">agencies_filenames</span><span class="p">[</span><span class="n">agency</span><span class="p">]))</span>
+                <span class="n">urls</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;AgencyName&#39;</span><span class="p">]</span> <span class="o">==</span>
+                            <span class="n">agency</span><span class="p">][</span><span class="s1">&#39;AdditionalInformationURL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+                <span class="n">extractor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agency_extractors</span><span class="p">[</span><span class="n">agency</span><span class="p">](</span>
+                    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">urls</span><span class="o">=</span><span class="n">urls</span><span class="p">,</span> <span class="n">save_filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extracted_agencies_filenames</span><span class="p">[</span><span class="n">agency</span><span class="p">])</span>
+                <span class="n">extractor</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span>
+                    <span class="n">n_cores</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span>
+                    <span class="n">output_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Completed extraction for agency - :&quot;</span><span class="p">,</span> <span class="n">agency</span><span class="p">)</span>
+                
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error for Agency : &quot;</span><span class="p">,</span> <span class="n">agency</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="c1"># Read arguments from command line (cmd). If no input via cmd, use config</span>
+    <span class="c1"># file</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Parameter file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--config_file&#39;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;FILENAME&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;config.yml&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Parameter file name in yaml format&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;--agencies&#39;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;AGENCIES&#39;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[</span>
+            <span class="s1">&#39;National Science Foundation&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;National Institutes of Health&#39;</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Agencies whose proposals are to be extracted&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--n_cores&#39;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;CPU_COUNT&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;No of CPU threads to be used&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Extracting Proposals from Agencies&quot;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config_file</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error loading parameter file: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">config_file</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">extractor</span> <span class="o">=</span> <span class="n">AgencyDataExtractor</span><span class="p">(</span>
+        <span class="n">n_cores</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span>
+        <span class="n">agencies</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">agencies</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">extractor</span><span class="o">.</span><span class="n">extract_agency_proposals</span><span class="p">()</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TASK COMPLETED : Completed Extracting Proposals&quot;</span><span class="p">)</span> 
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tau_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
