@@ -1,0 +1,5 @@
+* * * * * echo "hello world"
+
+* * * * * echo This is some text > myfile.txt
+
+0 0 * * * /usr/bin/bash /usr/src/app/bash_file.sh
