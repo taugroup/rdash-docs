@@ -21,6 +21,17 @@ nlp = spacy.load('en_core_web_sm')
 
 
 def countVectorizer(n_gram, text):
+    """
+        Function to get feature names (words) from the input text
+
+    :param text: the text to be used to extract keywords from
+    :type text: List of strings
+    :param n_gram: tuple containing minimum and maximum values of n_gram
+    :type n_gram: `tuple`
+
+    :return: feature (read words) learned from the text
+    :rtype: `List of words`
+    """
     count = CountVectorizer(
         ngram_range=n_gram,
         stop_words=stop_words).fit(text)

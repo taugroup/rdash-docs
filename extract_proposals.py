@@ -60,6 +60,8 @@ class GrantsDataExtractor(object):
         """ Function to extract data from the downloaded CSV file 
         Once the data is extracted it will be saved as a dataframe - self.metadata
         
+        :param None: 
+        
         :return: None
         """
 
